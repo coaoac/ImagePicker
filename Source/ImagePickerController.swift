@@ -18,7 +18,7 @@ open class ImagePickerController: UIViewController {
     static let minimumHeight: CGFloat = 125
     static let velocity: CGFloat = 100
   }
-
+/*
   open lazy var galleryView: ImageGalleryView = { [unowned self] in
     let galleryView = ImageGalleryView(configuration: self.configuration)
     galleryView.delegate = self
@@ -28,7 +28,7 @@ open class ImagePickerController: UIViewController {
 
     return galleryView
     }()
-
+*/
   open lazy var bottomContainer: BottomContainerView = { [unowned self] in
     let view = BottomContainerView(configuration: self.configuration)
     view.backgroundColor = self.configuration.bottomContainerColor
@@ -55,7 +55,7 @@ open class ImagePickerController: UIViewController {
 
   lazy var panGestureRecognizer: UIPanGestureRecognizer = { [unowned self] in
     let gesture = UIPanGestureRecognizer()
-    gesture.addTarget(self, action: #selector(panGestureRecognizerHandler(_:)))
+    //gesture.addTarget(self, action: #selector(panGestureRecognizerHandler(_:)))
 
     return gesture
     }()
@@ -111,7 +111,7 @@ open class ImagePickerController: UIViewController {
   open override func viewDidLoad() {
     super.viewDidLoad()
 
-    for subview in [cameraController.view, galleryView, bottomContainer, topView] {
+    for subview in [cameraController.view, /*galleryView, */bottomContainer, topView] {
       view.addSubview(subview!)
       subview?.translatesAutoresizingMaskIntoConstraints = false
     }
@@ -142,7 +142,7 @@ open class ImagePickerController: UIViewController {
 
   open override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-
+/*
     let galleryHeight: CGFloat = UIScreen.main.nativeBounds.height == 960
       ? ImageGalleryView.Dimensions.galleryBarHeight : GestureConstants.minimumHeight
 
@@ -158,7 +158,7 @@ open class ImagePickerController: UIViewController {
 
     initialFrame = galleryView.frame
     initialContentOffset = galleryView.collectionView.contentOffset
-
+*/
     applyOrientationTransforms()
 
     UIAccessibility.post(notification: UIAccessibility.Notification.screenChanged,
@@ -210,7 +210,7 @@ open class ImagePickerController: UIViewController {
   }
 
   func permissionGranted() {
-    galleryView.fetchPhotos()
+    //galleryView.fetchPhotos()
     enableGestures(true)
   }
 
@@ -258,8 +258,10 @@ open class ImagePickerController: UIViewController {
 
   @objc func didReloadAssets(_ notification: Notification) {
     adjustButtonTitle(notification)
+    /*
     galleryView.collectionView.reloadData()
     galleryView.collectionView.setContentOffset(CGPoint.zero, animated: false)
+ */
   }
 
   @objc func volumeChanged(_ notification: Notification) {
@@ -292,7 +294,7 @@ open class ImagePickerController: UIViewController {
   open override var prefersStatusBarHidden: Bool {
     return statusBarHidden
   }
-
+/*
   open func collapseGalleryView(_ completion: (() -> Void)?) {
     galleryView.collectionViewLayout.invalidateLayout()
     UIView.animate(withDuration: 0.3, animations: {
@@ -331,21 +333,22 @@ open class ImagePickerController: UIViewController {
     galleryView.frame.origin.y = totalSize.height - bottomContainer.frame.height - constant
     galleryView.frame.size.height = constant
   }
-
+*/
   func enableGestures(_ enabled: Bool) {
-    galleryView.alpha = enabled ? 1 : 0
+    //galleryView.alpha = enabled ? 1 : 0
     bottomContainer.pickerButton.isEnabled = enabled
     bottomContainer.tapGestureRecognizer.isEnabled = enabled
     topView.flashButton.isEnabled = enabled
     topView.rotateCamera.isEnabled = configuration.canRotateCamera
   }
 
+    /*
   fileprivate func isBelowImageLimit() -> Bool {
     return (imageLimit == 0 || imageLimit > galleryView.selectedStack.assets.count)
     }
-
+*/
   fileprivate func takePicture() {
-    guard isBelowImageLimit() && !isTakingPicture else { return }
+    //guard isBelowImageLimit() && !isTakingPicture else { return }
     isTakingPicture = true
     bottomContainer.pickerButton.isEnabled = false
     bottomContainer.stackView.startLoader()
@@ -354,11 +357,11 @@ open class ImagePickerController: UIViewController {
       self.cameraController.takePicture { self.isTakingPicture = false }
     }
 
-    if configuration.collapseCollectionViewWhileShot {
-      collapseGalleryView(action)
-    } else {
+   // if configuration.collapseCollectionViewWhileShot {
+      //collapseGalleryView(action)
+    //} else {
       action()
-    }
+   // }
   }
 }
 
@@ -405,6 +408,7 @@ extension ImagePickerController: CameraViewDelegate {
     }
   }
 
+    /*
   func imageToLibrary() {
     guard let collectionSize = galleryView.collectionSize else { return }
 
@@ -425,7 +429,7 @@ extension ImagePickerController: CameraViewDelegate {
         self.galleryView.collectionView.transform = CGAffineTransform.identity
     })
   }
-
+*/
   func cameraNotAvailable() {
     topView.flashButton.isHidden = true
     topView.rotateCamera.isHidden = true
@@ -451,7 +455,7 @@ extension ImagePickerController: CameraViewDelegate {
         $0.transform = rotate
       }
 
-      self.galleryView.collectionViewLayout.invalidateLayout()
+     // self.galleryView.collectionViewLayout.invalidateLayout()
 
       let translate: CGAffineTransform
       if Helper.previousOrientation.isLandscape {
@@ -479,7 +483,7 @@ extension ImagePickerController: TopViewDelegate {
 }
 
 // MARK: - Pan gesture handler
-
+/*
 extension ImagePickerController: ImageGalleryPanGestureDelegate {
 
   func panGestureDidStart() {
@@ -498,10 +502,12 @@ extension ImagePickerController: ImageGalleryPanGestureDelegate {
       gesture.state == .began ? panGestureDidStart() : panGestureDidChange(translation)
     }
 
+
     if gesture.state == .ended {
       panGestureDidEnd(translation, velocity: velocity)
     }
   }
+
 
   func panGestureDidChange(_ translation: CGPoint) {
     guard let initialFrame = initialFrame else { return }
@@ -539,4 +545,6 @@ extension ImagePickerController: ImageGalleryPanGestureDelegate {
       collapseGalleryView(nil)
     }
   }
+
 }
+  */
